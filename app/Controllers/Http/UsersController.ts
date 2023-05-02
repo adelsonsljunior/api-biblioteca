@@ -31,7 +31,6 @@ export default class UsersController {
     }
 
     const data = request.only(['name', 'email', 'password', 'isAdmin'])
-    console.log(data)
     user.merge(data)
     await user.save()
     return response.ok(user)
