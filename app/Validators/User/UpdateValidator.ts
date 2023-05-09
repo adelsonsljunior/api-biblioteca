@@ -30,7 +30,6 @@ export default class UpdateValidator {
       rules.unique({ table: 'users', column: 'email' }),
     ]),
     password: schema.string.optional({}, [rules.minLength(6), rules.maxLength(180)]),
-    isAdmin: schema.boolean.optional(),
   })
 
   /**

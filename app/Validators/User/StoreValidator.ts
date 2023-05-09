@@ -31,7 +31,6 @@ export default class StoreValidator {
       rules.required(),
     ]),
     password: schema.string({}, [rules.minLength(6), rules.maxLength(180), rules.required()]),
-    isAdmin: schema.boolean.optional(),
   })
 
   /**
