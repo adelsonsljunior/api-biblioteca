@@ -1,11 +1,29 @@
-version: '3.0'
+# For more information: https://github.com/julien-r44/adonis-sail
+version: '3'
+
 services:
-  database:
-    image: postgres:alpine
-    container_name: biblioteca
-    environment:
-      POSTGRES_DB: ${PG_DB_NAME}
-      POSTGRES_PASSWORD: ${PG_PASSWORD}
-      POSTGRES_USER: ${PG_USER}
+  pgsql:
+    image: 'postgres:alpine'
+    container_name: pgsql
     ports:
-      - 5432:${PG_PORT}
+      - '${PG_PORT:-5432}:5432'
+    environment:
+      PGPASSWORD: '${PG_PASSWORD:-secret}'
+      POSTGRES_DB: '${PG_DB_NAME:-default}'
+      POSTGRES_USER: '${PG_USER?:err}'
+      POSTGRES_PASSWORD: '${PG_PASSWORD:-secret}'
+    volumes:
+      - 'sailpgsql:/var/lib/postgresql/data'
+    networks:
+      - sail
+    healthcheck:
+      test: ["CMD", "pg_isready", "-q", "-d", "${PG_DB_NAME:-default}", "-U", "${PG_USER}"]
+      retries: 3
+      timeout: 5s
+
+networks:
+  sail:
+    driver: bridge
+
+volumes:
+  sailpgsql:
